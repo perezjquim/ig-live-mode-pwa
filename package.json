@@ -1,5 +1,5 @@
 {
-  "name": "ytc-pwa",
+  "name": "ig-live-mode-pwa",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/perezjquim/ytc-pwa.git"
+    "url": "git+https://github.com/perezjquim/ig-live-mode-pwa.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/perezjquim/ytc-pwa/issues"
+    "url": "https://github.com/perezjquim/ig-live-mode-pwa/issues"
   },
-  "homepage": "https://github.com/perezjquim/ytc-pwa#readme",
+  "homepage": "https://github.com/perezjquim/ig-live-mode-pwa#readme",
   "ui5": {
     "dependencies": [
       "ui5-task-cachebuster-indexing"

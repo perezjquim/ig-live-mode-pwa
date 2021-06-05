@@ -1,7 +1,10 @@
 {
-	"items": [{
-		"key": "Home",
-		"icon": "sap-icon://home"
-	}],
-	"selected": null
+        "items": [{
+                "key": "Home",
+                "icon": "sap-icon://home"
+        }, {
+                "key": "Config",
+                "icon": "sap-icon://settings"
+        }],
+        "selected": null
 }

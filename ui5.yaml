@@ -1,6 +1,6 @@
 specVersion: '2.4'
 metadata:
-  name: ytc-pwa
+  name: ig-live-mode-pwa
 type: application
 builder:
   customTasks:

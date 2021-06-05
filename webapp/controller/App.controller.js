@@ -7,11 +7,13 @@ sap.ui.define([
 	"./util/SWHelper"
 ], function(BaseController, History, Fragment, Storage, Device, SWHelper) {
 	"use strict";
-	return BaseController.extend("com.perezjquim.ytc.pwa.controller.App", {
+	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.App", {
 
 		onInit: function(oEvent) {
 			const oSWHelper = new SWHelper(this);
 			oSWHelper.init();
+
+			this._reloadConfig();
 		},
 
 		onHomeButtonPress: function(oEvent) {
@@ -51,6 +53,16 @@ sap.ui.define([
 
 		onNavButtonPress: function(oEvent) {
 			this.navBack();
+		},
+
+		_reloadConfig: function() {
+			const oStorage = this.getStorage();
+			const sConfig = oStorage.getItem("config");
+			if (sConfig) {
+				const oConfig = JSON.parse(sConfig);
+				const oModel = this.getModel("config");
+				oModel.setData(oConfig);
+			}
 		}
 
 	});

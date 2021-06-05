@@ -1,6 +1,6 @@
 {
-	"name": "YTC",
-	"short_name": "YTC",
+	"name": "IG Live Mode",
+	"short_name": "IG Live Mode",
 	"icons": [{
 		"src": "images/icon.png",
 		"sizes": "144x144",
@@ -8,6 +8,6 @@
 	}],
 	"start_url": "/index.html",
 	"display": "standalone",
-	"background_color": "#FFA500",
-	"theme_color": "#FFA500"
+	"background_color": "#800080",
+	"theme_color": "#800080"
 }

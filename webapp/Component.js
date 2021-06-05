@@ -4,7 +4,7 @@ sap.ui.define([
 ], function(UIComponent, Device) {
 	"use strict";
 
-	return UIComponent.extend("com.perezjquim.ytc.pwa.Component", {
+	return UIComponent.extend("com.perezjquim.iglivemode.pwa.Component", {
 
 		metadata: {
 			manifest: "json"

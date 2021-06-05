@@ -1,5 +1,5 @@
 <mvc:View 
-    controllerName="com.perezjquim.ytc.pwa.controller.App"
+    controllerName="com.perezjquim.iglivemode.pwa.controller.App"
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:mvc="sap.ui.core.mvc"

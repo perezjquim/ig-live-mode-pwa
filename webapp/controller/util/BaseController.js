@@ -5,7 +5,7 @@ sap.ui.define([
 	"sap/m/MessageToast"
 ], function(Controller, History, BusyIndicator, MessageToast) {
 	"use strict";
-	return Controller.extend("com.perezjquim.ytc.pwa.controller.util.BaseController", {
+	return Controller.extend("com.perezjquim.iglivemode.pwa.controller.util.BaseController", {
 		toast: function(sText) {
 			MessageToast.show(sText);
 		},

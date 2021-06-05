@@ -1,5 +1,5 @@
 <mvc:View 
-    controllerName="com.perezjquim.ytc.pwa.controller.Home" 
+    controllerName="com.perezjquim.iglivemode.pwa.controller.Home" 
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:l="sap.ui.layout"
@@ -10,18 +10,17 @@
         <f:SimpleForm 
         	editable="false">
             <f:content>
-                <Label text="{i18n>url}"/>
-                <Input value="{prompt>/url}"/>
-                <Label text="{i18n>start_time}"/>
-                <Input value="{prompt>/start_time}"/>
-                <Label text="{i18n>duration}"/>
-                <Input value="{prompt>/duration}"/>
                 <HBox justifyContent="SpaceBetween">                    
                     <Button 
-                    	icon="sap-icon://download" 
-                    	press="onPressDownload" 
-                        text="{i18n>download}"
-                    	type="Emphasized" />
+                    	icon="sap-icon://play" 
+                    	press="onPressEnableLive" 
+                    	text="{i18n>enable_live}" 
+                    	type="Accept" />
+                    <Button
+                    	icon="sap-icon://stop" 
+                    	press="onPressDisableLive" 
+                    	text="{i18n>disable_live}" 
+                    	type="Reject" />
                 </HBox>
             </f:content>
         </f:SimpleForm>           
