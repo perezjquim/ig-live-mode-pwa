@@ -49,10 +49,11 @@
                                         src="{ path: 'config>user_name', formatter: '.fetchAvatar' }"
                                         displaySize="S"
                                         showBorder="true" />                                    
-                                    <Input value="{config>user_name}"/>
+                                    <Input 
+                                        width="10rem"
+                                        value="{config>user_name}"/>
                                     <Text 
                                         busyIndicatorDelay="0"
-                                        width="10rem"                          
                                         wrapping="false"
                                         text="{ path: 'config>user_name', formatter: '.fetchFullName' }"/>  
                                     <Button
@@ -100,11 +101,12 @@
                                         src="{ path: 'config>user_name', formatter: '.fetchAvatar' }"
                                         displaySize="S"
                                         showBorder="true" />                                    
-                                    <Input value="{config>user_name}"/>
+                                    <Input 
+                                        width="10rem"
+                                        value="{config>user_name}"/>
                                     <Text 
                                         busyIndicatorDelay="0"
-                                        width="10rem"                                        
-                                        wrapping="false"
+                                        wrapping="false"                  
                                         text="{ path: 'config>user_name', formatter: '.fetchFullName' }"/>  
                                     <Button
                                         icon="sap-icon://delete"
