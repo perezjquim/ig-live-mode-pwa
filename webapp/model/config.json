@@ -1,7 +1,5 @@
 {
 	"user": "",
 	"general_blacklist": [],
-	"live_whitelist": [{
-
-	}]
+	"live_whitelist": []
 }
