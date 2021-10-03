@@ -60,6 +60,8 @@ sap.ui.define([
 			oNewData.splice(iSelectedItemIndex, 1);
 
 			oModel.setProperty(sPath, oNewData);
+
+			this.onConfigChange();
 		},
 
 		fetchAvatar: async function(sUserName) {
