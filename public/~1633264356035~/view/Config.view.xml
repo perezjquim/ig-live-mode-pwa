@@ -102,10 +102,11 @@
                                         displaySize="S"
                                         showBorder="true" />                                    
                                     <Input 
-                                        width="10rem"
+                                        width="8rem"
                                         value="{config>user_name}"/>
                                     <Text 
                                         busyIndicatorDelay="0"
+                                        width="3rem"                                        
                                         wrapping="false"                  
                                         text="{ path: 'config>user_name', formatter: '.fetchFullName' }"/>  
                                     <Button
