@@ -6,6 +6,9 @@ sap.ui.define([
 ], function(Controller, History, BusyIndicator, MessageToast) {
 	"use strict";
 	return Controller.extend("com.perezjquim.iglivemode.pwa.controller.util.BaseController", {
+
+		API_BASE_URL: "https://perezjquim-ig-live-mode.herokuapp.com",
+
 		toast: function(sText) {
 			MessageToast.show(sText);
 		},

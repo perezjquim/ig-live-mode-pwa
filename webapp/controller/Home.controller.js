@@ -5,8 +5,6 @@ sap.ui.define([
 	"use strict";
 	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.Home", {
 
-		API_BASE_URL: "https://perezjquim-ig-live-mode.herokuapp.com",
-
 		onPressEnableLive: function(oEvent) {
 			this._executeAction("enable-live");
 		},

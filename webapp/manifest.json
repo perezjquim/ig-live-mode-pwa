@@ -71,6 +71,9 @@
 			"navigation": {
 				"type": "sap.ui.model.json.JSONModel",
 				"uri": "model/navigation.json"
+			},
+			"ig_user_info": {
+				"type": "sap.ui.model.json.JSONModel"
 			}
 		},
 		"resources": {},

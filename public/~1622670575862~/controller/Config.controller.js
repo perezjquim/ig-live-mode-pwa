@@ -1,1 +1,0 @@
-sap.ui.define(["./util/BaseController","sap/ui/util/Storage"],function(t,e){"use strict";return t.extend("com.perezjquim.iglivemode.pwa.controller.Config",{onConfigChange:function(){this.setBusy(true);const t=this.getModel("config");const e=t.getData();const i=JSON.stringify(e);const n=this.getStorage();n.setItem("config",i);this.setBusy(false)}})});

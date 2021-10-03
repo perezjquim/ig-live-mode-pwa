@@ -2,7 +2,8 @@
     controllerName="com.perezjquim.iglivemode.pwa.controller.Config" 
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns:f="sap.ui.layout.form">
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
     <Page 
         title="{i18n>Config}">
         <f:SimpleForm 
@@ -11,20 +12,109 @@
                 <Label 
                     text="{i18n>user}" />
                 <Input
-                    value="{config>/user}"
-                    change="onConfigChange"/>                       
+                    value="{config>/user}"/>                       
                 <Label 
                     text="{i18n>general_blacklist}" />
-                <TextArea
-                    value="{config>/general_blacklist}"
-                    change="onConfigChange"
-                    rows="10"/>        
+                <Table
+                    items="{config>/general_blacklist}">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <content>
+                                <core:Icon
+                                    src="sap-icon://private"
+                                    color="Negative"/>
+                                <ObjectStatus
+                                    state="Error"
+                                    text="{i18n>general_blacklist_tip}"/>
+                                <ToolbarSpacer />
+                                <Button
+                                    icon="sap-icon://add"
+                                    type="Accept"
+                                    press="onAddEntry" />
+                            </content>
+                        </OverflowToolbar>
+                    </headerToolbar>                    
+                    <columns>
+                        <Column>
+                            <Label text="{i18n>user}" />
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <HBox
+                                    justifyContent="SpaceAround">
+                                    <Avatar 
+                                        busyIndicatorDelay="0"
+                                        src="{ path: 'config>user_name', formatter: '.fetchAvatar' }"
+                                        displaySize="S"
+                                        showBorder="true" />                                    
+                                    <Input value="{config>user_name}"/>
+                                    <Text 
+                                        busyIndicatorDelay="0"
+                                        width="10rem"                          
+                                        wrapping="false"
+                                        text="{ path: 'config>user_name', formatter: '.fetchFullName' }"/>  
+                                    <Button
+                                        icon="sap-icon://delete"
+                                        type="Reject"
+                                        press="onRemoveEntry"/>          
+                                </HBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>     
                 <Label 
                     text="{i18n>live_whitelist}" />
-                <TextArea
-                    value="{config>/live_whitelist}"
-                    change="onConfigChange"
-                    rows="10"/>                                        
+                <Table
+                    items="{config>/live_whitelist}">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <content>
+                                <core:Icon
+                                    src="sap-icon://role"
+                                    color="Positive"/>
+                                <ObjectStatus
+                                    state="Success"
+                                    text="{i18n>live_whitelist_tip}"/>                                    
+                                <ToolbarSpacer />
+                                <Button
+                                    icon="sap-icon://add"
+                                    type="Accept"
+                                    press="onAddEntry" />
+                            </content>
+                        </OverflowToolbar>
+                    </headerToolbar>                    
+                    <columns>
+                        <Column>
+                            <Label text="{i18n>user}" />
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <HBox
+                                    justifyContent="SpaceAround">
+                                    <Avatar 
+                                        busyIndicatorDelay="0"
+                                        src="{ path: 'config>user_name', formatter: '.fetchAvatar' }"
+                                        displaySize="S"
+                                        showBorder="true" />                                    
+                                    <Input value="{config>user_name}"/>
+                                    <Text 
+                                        busyIndicatorDelay="0"
+                                        width="10rem"                                        
+                                        wrapping="false"
+                                        text="{ path: 'config>user_name', formatter: '.fetchFullName' }"/>  
+                                    <Button
+                                        icon="sap-icon://delete"
+                                        type="Reject"
+                                        press="onRemoveEntry"/>          
+                                </HBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>         
             </f:content>            
         </f:SimpleForm>        
     </Page>
