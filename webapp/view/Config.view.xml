@@ -50,11 +50,11 @@
                                         displaySize="S"
                                         showBorder="true" />                                    
                                     <Input 
-                                        width="10rem"
+                                        width="8rem"
                                         value="{config>user_name}"/>
                                     <Text 
                                         busyIndicatorDelay="0"
-                                        wrapping="false"
+                                        width="3rem"                      
                                         text="{ path: 'config>user_name', formatter: '.fetchFullName' }"/>  
                                     <Button
                                         icon="sap-icon://delete"
