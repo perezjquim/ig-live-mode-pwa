@@ -7,6 +7,10 @@
 		        <f:SimpleForm 
 		            editable="true">
 		            <f:content>
+				<Label 
+	                	    text="{i18n>user}" />
+		                <Text
+		                    text="{config>/user}"/>           	            	
 		                <Label 
 		                    text="{i18n>pw}"/>
 		                <Input
