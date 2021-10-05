@@ -14,21 +14,24 @@ sap.ui.define([
 		},
 
 		_executeAction: function(sEndpoint) {
-			this.setBusy(true);
-
 			this._sEndpoint = sEndpoint;
 
-			const oView = this.getView();
-			Fragment.load({
-				name: "com.perezjquim.iglivemode.pwa.view.fragment.ActionPrompt",
-				controller: this
-			}).then(function(oDialog) {
-				this.setBusy(false);
-				oView.addDependent(oDialog);
-				oDialog.open();
-				this._oPromptDialog = oDialog;
-				return oDialog;
-			}.bind(this));
+			if (!this._oPromptDialog) {
+				this.setBusy(true);
+
+				const oView = this.getView();
+				Fragment.load({
+					name: "com.perezjquim.iglivemode.pwa.view.fragment.ActionPrompt",
+					controller: this
+				}).then(function(oDialog) {
+					this.setBusy(false);
+					oView.addDependent(oDialog);
+					oDialog.open();
+					this._oPromptDialog = oDialog;
+				}.bind(this));
+			} else {
+				this._oPromptDialog.open();
+			}
 		},
 
 		onConfirmAction: function() {
