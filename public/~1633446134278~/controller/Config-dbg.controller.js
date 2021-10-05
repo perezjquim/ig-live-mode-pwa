@@ -1,9 +1,8 @@
 sap.ui.define([
 	"./util/BaseController",
 	"sap/m/MessageBox",
-	"sap/m/MessageToast",
 	"sap/ui/core/Fragment"
-], function(BaseController, MessageBox, MessageToast, Fragment) {
+], function(BaseController, MessageBox, Fragment) {
 	"use strict";
 	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.Config", {
 		onInit: function() {
@@ -107,7 +106,7 @@ sap.ui.define([
 					if (sAction == MessageBox.Action.OK) {
 						this._removeEntry(oRemoveSource);
 						const sToastText = this.getText("user_removed");
-						MessageToast.show(sToastText);
+						this.toast(sToastText);
 					}
 				}.bind(this)
 			});
