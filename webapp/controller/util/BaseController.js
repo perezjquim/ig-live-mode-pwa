@@ -40,7 +40,7 @@ sap.ui.define([
 				const oComponent = this.getOwnerComponent();
 				const oRouter = oComponent.getRouter();
 				oRouter.navTo(sRoute, oParams, bReplace);
-			});
+			}.bind(this));
 		},
 		getText: function(sKey) {
 			const oI18n = this.getModel("i18n");
