@@ -3,7 +3,7 @@ sap.ui.define([
 	"sap/ui/core/Fragment"
 ], function(BaseController, Fragment) {
 	"use strict";
-	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.Home", {
+	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.ToggleLiveMode", {
 
 		onPressEnableLive: function(oEvent) {
 			this._executeAction("enable-live");

@@ -102,6 +102,12 @@
 				"target": [
 					"Config"
 				]
+			}, {
+				"name": "ToggleLiveMode",
+				"pattern": "ToggleLiveMode",
+				"target": [
+					"ToggleLiveMode"
+				]
 			}],
 			"targets": {
 				"Home": {
@@ -115,6 +121,12 @@
 					"transition": "slide",
 					"controlAggregation": "pages",
 					"viewName": "Config"
+				},
+				"ToggleLiveMode": {
+					"viewType": "XML",
+					"transition": "slide",
+					"controlAggregation": "pages",
+					"viewName": "ToggleLiveMode"
 				}
 			}
 		}

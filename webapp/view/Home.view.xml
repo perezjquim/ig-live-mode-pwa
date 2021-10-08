@@ -1,28 +1,31 @@
 <mvc:View 
     controllerName="com.perezjquim.iglivemode.pwa.controller.Home" 
     xmlns="sap.m"
-    xmlns:core="sap.ui.core"
-    xmlns:l="sap.ui.layout"
-    xmlns:f="sap.ui.layout.form"
+    xmlns:f="sap.f"
     xmlns:mvc="sap.ui.core.mvc">
     <Page 
     	title="{i18n>Home}">
-        <f:SimpleForm 
-        	editable="false">
-            <f:content>
-                <HBox justifyContent="SpaceBetween">                    
-                    <Button 
-                    	icon="sap-icon://play" 
-                    	press="onPressEnableLive" 
-                    	text="{i18n>enable_live}" 
-                    	type="Accept" />
-                    <Button
-                    	icon="sap-icon://stop" 
-                    	press="onPressDisableLive" 
-                    	text="{i18n>disable_live}" 
-                    	type="Reject" />
-                </HBox>
-            </f:content>
-        </f:SimpleForm>           
+        <f:GridContainer  
+            items="{ 
+                path: 'navigation>/items', 
+                filters:
+                [
+                    { path: 'key', operator: 'NE', value1: 'Home' }
+                ]
+            }">
+            <f:items>
+                <GenericTile 
+                    class="sapUiSmallMargin"
+                    header="{ path: 'navigation>key', formatter: '.getText' }"
+                    press=".navTo(${ path: 'navigation>key' })">
+                    <layoutData>
+                        <f:GridContainerItemLayoutData minRows="2" columns="2" />
+                    </layoutData>
+                    <TileContent>
+                        <ImageContent src="{navigation>icon}" />
+                    </TileContent>
+                </GenericTile>        
+            </f:items>            
+        </f:GridContainer>            
     </Page>
 </mvc:View>
