@@ -5,6 +5,8 @@ sap.ui.define([
 ], function(BaseController, MessageBox, Fragment) {
 	"use strict";
 	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.Config", {
+		_oFetchPromises: [],
+
 		onInit: function() {
 			const oModel = this.getModel("config");
 			oModel.attachPropertyChange(this.onConfigChange.bind(this));
@@ -173,9 +175,13 @@ sap.ui.define([
 		},
 
 		_fetchUserInfo: async function(sUserName) {
-			const oResponse = await fetch(`${this.API_BASE_URL}/get-user-info/${sUserName}`, {
-				method: "GET"
-			});
+			if (!this._oFetchPromises[sUserName]) {
+				this._oFetchPromises[sUserName] = fetch(`${this.API_BASE_URL}/get-user-info/${sUserName}`, {
+					method: "GET"
+				});
+			}
+			const oFetchPromise = this._oFetchPromises[sUserName];
+			const oResponse = await oFetchPromise;
 			if (oResponse.ok) {
 				const oUserInfo = await oResponse.json();
 				return oUserInfo;
