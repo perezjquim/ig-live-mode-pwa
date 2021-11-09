@@ -56,17 +56,9 @@
 					"bundleName": "com.perezjquim.iglivemode.pwa.i18n.i18n"
 				}
 			},
-			"misc": {
-				"type": "sap.ui.model.json.JSONModel",
-				"uri": "model/dummy.json"
-			},
 			"config": {
 				"type": "sap.ui.model.json.JSONModel",
 				"uri": "model/config.json"
-			},
-			"prompt": {
-				"type": "sap.ui.model.json.JSONModel",
-				"uri": "model/prompt.json"
 			},
 			"navigation": {
 				"type": "sap.ui.model.json.JSONModel",
@@ -78,6 +70,9 @@
 			"new_user_prompt": {
 				"type": "sap.ui.model.json.JSONModel",
 				"uri": "model/new_user_prompt.json"
+			},
+			"login_prompt": {
+				"type": "sap.ui.model.json.JSONModel"
 			}
 		},
 		"resources": {},

@@ -10,10 +10,6 @@
             editable="true">
             <f:content>
                 <Label 
-                    text="{i18n>user}" />
-                <Input
-                    value="{config>/user}"/>                       
-                <Label 
                     text="{i18n>general_blacklist}" />
                 <Table
                     items="{config>/general_blacklist}">
