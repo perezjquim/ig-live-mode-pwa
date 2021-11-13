@@ -13,7 +13,15 @@
             	menuButtonPressed="onMenuButtonPress" 
                 showNavButton="true"
                 navButtonPressed="onNavButtonPress"
-            	title="{i18n>appTitle}"/>
+            	title="{i18n>appTitle}">
+                <f:profile>
+                    <Avatar
+                            src="{ path: 'config>/authenticated_user_name', formatter: '.fetchAvatar' }"
+                            displaySize="S"
+                            showBorder="true"
+                            press="onAvatarPress"/>
+                </f:profile>
+            </f:ShellBar>
         </tnt:header>
         <tnt:sideContent>
             <tnt:SideNavigation 

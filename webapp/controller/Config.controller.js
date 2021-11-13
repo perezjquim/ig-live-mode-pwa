@@ -5,7 +5,6 @@ sap.ui.define([
 ], function(BaseController, MessageBox, Fragment) {
 	"use strict";
 	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.Config", {
-		_oFetchPromises: [],
 
 		onInit: function() {
 			const oModel = this.getModel("config");
@@ -137,57 +136,6 @@ sap.ui.define([
 			oModel.setProperty(sPath, oNewData);
 
 			this.onConfigChange();
-		},
-
-		fetchAvatar: async function(sUserName) {
-			if (sUserName) {
-				const oUserInfo = await this._getUserInfo(sUserName);
-				if (oUserInfo) {
-					const sAvatarUrlProperty = "profile_pic_content";
-					const sAvatarUrl = oUserInfo[sAvatarUrlProperty];
-					return sAvatarUrl;
-				}
-			}
-		},
-
-		fetchFullName: async function(sUserName) {
-			if (sUserName) {
-				const oUserInfo = await this._getUserInfo(sUserName);
-				if (oUserInfo) {
-					const sFullNameProperty = "full_name";
-					const sFullName = oUserInfo[sFullNameProperty];
-					return sFullName;
-				}
-			}
-		},
-
-		_getUserInfo: async function(sUserName) {
-			const oUserInfoModel = this.getModel("ig_user_info");
-			const sProperty = `/${sUserName}`;
-			var oUserInfo = oUserInfoModel.getProperty(sProperty);
-			if (oUserInfo) {
-				return oUserInfo;
-			} else {
-				oUserInfo = await this._fetchUserInfo(sUserName);
-				oUserInfoModel.setProperty(sProperty, oUserInfo);
-				return oUserInfo;
-			}
-		},
-
-		_fetchUserInfo: async function(sUserName) {
-			if (!this._oFetchPromises[sUserName]) {
-				this._oFetchPromises[sUserName] = fetch(`${this.API_BASE_URL}/get-user-info/${sUserName}`, {
-					method: "GET"
-				});
-			}
-			const oFetchPromise = this._oFetchPromises[sUserName];
-			const oResponse = await oFetchPromise;
-			if (oResponse.ok) {
-				const oUserInfo = await oResponse.json();
-				return oUserInfo;
-			} else {
-				return {};
-			}
 		}
 	});
 });

@@ -7,16 +7,15 @@
 		<content>
 		       <VBox fitContainer="true" justifyContent="Center" alignItems="Center" alignContent="Center">
 			    <items>
-				     <Input placeholder="{i18n>user}" value="{login_prompt>/user}"/>
-				     <Input placeholder="{i18n>pw}" type="Password" value="{login_prompt>/pw}"/>
+				     	<Input width="20vw" placeholder="{i18n>user}" value="{login_prompt>/user}"/>
+				     	<Input width="20vw" placeholder="{i18n>pw}" type="Password" value="{login_prompt>/pw}"/>
+					<Button
+						width="20vw"
+						text="{i18n>login}"
+						type="Emphasized"
+						press="onConfirmLogin"/>					     
 			    </items>
 		   	</VBox>
 		</content>
-		<beginButton>
-			<Button
-				text="{i18n>login}"
-				type="Emphasized"
-				press="onConfirmLogin"/>			
-		</beginButton>
 	</Dialog>
 </core:FragmentDefinition>

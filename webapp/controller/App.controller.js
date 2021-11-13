@@ -58,17 +58,24 @@ sap.ui.define([
 
 		_reloadConfig: function() {
 			const oStorage = this.getStorage();
+
+			var oConfig = {};
+
 			const sConfig = oStorage.getItem("config");
 			if (sConfig) {
-				const oConfig = JSON.parse(sConfig);
-				const oModel = this.getModel("config");
-				oModel.setData(oConfig);
+				oConfig = JSON.parse(sConfig);
 			}
+
+			const sAuthenticatedUsername = oStorage.getItem("authenticated_user_name");
+			oConfig["authenticated_user_name"] = sAuthenticatedUsername;
+
+			const oModel = this.getModel("config");
+			oModel.setData(oConfig);
 		},
 
 		_checkLogin: function() {
 			const oModel = this.getModel("config");
-			const bIsLoggedIn = localStorage.getItem("is_logged_in") == "true";
+			const bIsLoggedIn = Boolean(localStorage.getItem("authenticated_user_name"));
 
 			if (!bIsLoggedIn) {
 				this._askForLogin();
@@ -103,25 +110,31 @@ sap.ui.define([
 			this.clearModel("login_prompt");
 		},
 
-		onConfirmLogin: function(oEvent) {
+		onConfirmLogin: async function(oEvent) {
 			this.setBusy(true);
 
 			const oLoginPromptModel = this.getModel("login_prompt");
 			const oLoginPromptData = oLoginPromptModel.getData();
 
-			const oBody = {
-				auth: oLoginPromptData
-			};
-			const sBody = JSON.stringify(oBody);
+			const sUsername = oLoginPromptData["user"];
+			const sPassword = oLoginPromptData["pw"];
 
-			if (oLoginPromptData && sBody) {
+			const sAuth = "Basic " + btoa(sUsername + ":" + sPassword);
+
+			if (oLoginPromptData && sAuth) {
 
 				fetch(`${this.API_BASE_URL}/login`, {
 					method: "POST",
-					body: sBody
-				}).then((oResponse) => {
+					headers: {
+						"Authorization": sAuth
+					}
+				}).then(async (oResponse) => {
 					if (oResponse.ok) {
-						localStorage.setItem("is_logged_in", "true");
+						const oIGSettings = await oResponse.json();
+						const sIGSettings = JSON.stringify(oIGSettings);
+						localStorage.setItem("ig_settings", sIGSettings);
+						localStorage.setItem("authenticated_user_name", sUsername);
+						this._reloadConfig();
 						const sText = this.getText("action_success");
 						this.toast(sText);
 						this._oLoginPromptDialog.close();
@@ -145,7 +158,38 @@ sap.ui.define([
 		},
 
 		dummyEscapeHandler: function(oPromise) {
-			oPromise.resolve();
+			oPromise.reject();
+		},
+
+		onAvatarPress: function(oEvent) {
+			const oButton = oEvent.getSource();
+			if (!this._oUserDetailsPopover) {
+				this.setBusy(true);
+				Fragment.load({
+					name: "com.perezjquim.iglivemode.pwa.view.fragment.UserDetailsPopover",
+					controller: this
+				}).then(function(oPopover) {
+					this.setBusy(false);
+
+					const oView = this.getView();
+					oView.addDependent(oPopover);
+					oPopover.openBy(oButton);
+
+					this._oUserDetailsPopover = oPopover;
+				}.bind(this));
+			} else {
+				if (this._oUserDetailsPopover.isOpen()) {
+					this._oUserDetailsPopover.close();
+				} else {
+					this._oUserDetailsPopover.openBy(oButton);
+				}
+			}
+		},
+
+		onLogoff: function(oEvent) {
+			this.setBusy(true);
+			localStorage.setItem("authenticated_user_name", "");
+			location.reload();
 		}
 
 	});

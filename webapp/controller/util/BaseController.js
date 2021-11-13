@@ -7,6 +7,8 @@ sap.ui.define([
 	"use strict";
 	return Controller.extend("com.perezjquim.iglivemode.pwa.controller.util.BaseController", {
 
+		_oFetchPromises: [],
+
 		API_BASE_URL: "https://perezjquim-ig-live-mode.herokuapp.com",
 
 		toast: function(sText) {
@@ -66,6 +68,58 @@ sap.ui.define([
 				oData[sKey] = "";
 			}
 			oModel.setData(oData);
+		},
+
+
+		fetchAvatar: async function(sUserName) {
+			if (sUserName) {
+				const oUserInfo = await this._getUserInfo(sUserName);
+				if (oUserInfo) {
+					const sAvatarUrlProperty = "profile_pic_content";
+					const sAvatarUrl = oUserInfo[sAvatarUrlProperty];
+					return sAvatarUrl;
+				}
+			}
+		},
+
+		fetchFullName: async function(sUserName) {
+			if (sUserName) {
+				const oUserInfo = await this._getUserInfo(sUserName);
+				if (oUserInfo) {
+					const sFullNameProperty = "full_name";
+					const sFullName = oUserInfo[sFullNameProperty];
+					return sFullName;
+				}
+			}
+		},
+
+		_getUserInfo: async function(sUserName) {
+			const oUserInfoModel = this.getModel("ig_user_info");
+			const sProperty = `/${sUserName}`;
+			var oUserInfo = oUserInfoModel.getProperty(sProperty);
+			if (oUserInfo) {
+				return oUserInfo;
+			} else {
+				oUserInfo = await this._fetchUserInfo(sUserName);
+				oUserInfoModel.setProperty(sProperty, oUserInfo);
+				return oUserInfo;
+			}
+		},
+
+		_fetchUserInfo: async function(sUserName) {
+			if (!this._oFetchPromises[sUserName]) {
+				this._oFetchPromises[sUserName] = fetch(`${this.API_BASE_URL}/get-user-info/${sUserName}`, {
+					method: "GET"
+				});
+			}
+			const oFetchPromise = this._oFetchPromises[sUserName];
+			const oResponse = await oFetchPromise;
+			if (oResponse.ok) {
+				const oUserInfo = await oResponse.json();
+				return oUserInfo;
+			} else {
+				return {};
+			}
 		}
 	});
 });

@@ -14,50 +14,29 @@ sap.ui.define([
 		},
 
 		_executeAction: function(sEndpoint) {
-			this._sEndpoint = sEndpoint;
-
-			if (!this._oPromptDialog) {
-				this.setBusy(true);
-
-				const oView = this.getView();
-				Fragment.load({
-					name: "com.perezjquim.iglivemode.pwa.view.fragment.ActionPrompt",
-					controller: this
-				}).then(function(oDialog) {
-					this.setBusy(false);
-					oView.addDependent(oDialog);
-					oDialog.open();
-					this._oPromptDialog = oDialog;
-				}.bind(this));
-			} else {
-				this._oPromptDialog.open();
-			}
-		},
-
-		onConfirmAction: function() {
 			this.setBusy(true);
 
 			const oConfigModel = this.getModel("config");
 			const oConfigData = oConfigModel.getData();
 
-			const oPromptModel = this.getModel("prompt");
-			const oPromptData = oPromptModel.getData();
+			const sIGSettings = localStorage.getItem("ig_settings");
+			const oIGSettings = JSON.parse(sIGSettings);
 
-			const oBody = { ...oConfigData,
-				...oPromptData
+			const oBody = {
+				"config": oConfigData,
+				"ig_settings": oIGSettings
 			};
 			const sBody = JSON.stringify(oBody);
 
-			if (oConfigData && oPromptData && sBody) {
+			if (oConfigData && oIGSettings && sBody) {
 
-				fetch(`${this.API_BASE_URL}/${this._sEndpoint}`, {
+				fetch(`${this.API_BASE_URL}/${sEndpoint}`, {
 					method: "POST",
 					body: sBody
 				}).then((oResponse) => {
 					if (oResponse.ok) {
 						const sText = this.getText("action_success");
 						this.toast(sText);
-						this._oPromptDialog.close();
 					} else {
 						const sText = this.getText("action_error");
 						this.toast(sText);
@@ -75,20 +54,6 @@ sap.ui.define([
 				const sText = this.getText("incomplete_data");
 				this.toast(sText);
 			}
-		},
-
-		onCancelAction: function(oEvent) {
-			const oButton = oEvent.getSource();
-			const oDialog = oButton.getParent();
-			oDialog.close();
-		},
-
-		onBeforeOpenPromptDialog: function(oEvent) {
-			this.clearModel("prompt");
-		},
-
-		onAfterClosePromptDialog: function(oEvent) {
-			this.clearModel("prompt");
 		}
 
 	});
