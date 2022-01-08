@@ -67,10 +67,6 @@
 			"ig_user_info": {
 				"type": "sap.ui.model.json.JSONModel"
 			},
-			"new_user_prompt": {
-				"type": "sap.ui.model.json.JSONModel",
-				"uri": "model/new_user_prompt.json"
-			},
 			"login_prompt": {
 				"type": "sap.ui.model.json.JSONModel"
 			}

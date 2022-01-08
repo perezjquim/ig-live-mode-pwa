@@ -1,8 +1,7 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<ResponsivePopover
-		id="myPopover"
+	<Popover
 		title="{Name}"
 		placement="Bottom" >
 		<customHeader>
@@ -17,21 +16,23 @@
 			</OverflowToolbar>
 		</customHeader>
 		<content>
-			<HBox
+			<VBox
 				alignItems="Center"
 				alignContent="Center"
 				justifyContent="SpaceBetween">
 				<items>
 					<Avatar
 						class="sapUiTinyMargin"
-	                            		src="{ path: 'config>/authenticated_user_name', formatter: '.fetchAvatar' }"
+	                            		src="{ig_user_info>/profile_pic_content}"
 		                            	displaySize="L"
 		                            	showBorder="true"/>
+					<Title 
+						text="{ig_user_info>/full_name}" />
 					<Text 
 						class="sapUiTinyMargin"
-						text="{ path: 'config>/authenticated_user_name', formatter: '.fetchFullName' }" />		                          
+						text="({ig_user_info>/username})" />               
 				</items>
-			</HBox>
+			</VBox>
 		</content>
-	</ResponsivePopover>
+	</Popover>
 </core:FragmentDefinition>

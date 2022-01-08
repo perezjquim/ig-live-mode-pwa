@@ -59,27 +59,45 @@ sap.ui.define([
 		_reloadConfig: function() {
 			const oStorage = this.getStorage();
 
-			var oConfig = {};
-
 			const sConfig = oStorage.getItem("config");
 			if (sConfig) {
-				oConfig = JSON.parse(sConfig);
+				const oConfig = JSON.parse(sConfig);
+
+				const oModel = this.getModel("config");
+				oModel.setData(oConfig);
 			}
-
-			const sAuthenticatedUsername = oStorage.getItem("authenticated_user_name");
-			oConfig["authenticated_user_name"] = sAuthenticatedUsername;
-
-			const oModel = this.getModel("config");
-			oModel.setData(oConfig);
 		},
 
 		_checkLogin: function() {
 			const oModel = this.getModel("config");
-			const bIsLoggedIn = Boolean(localStorage.getItem("authenticated_user_name"));
+			const bIsLoggedIn = Boolean(localStorage.getItem("ig_settings"));
 
-			if (!bIsLoggedIn) {
+			if (bIsLoggedIn) {
+				(async function() {
+					this._fetchUserInfo();
+				}.bind(this))();
+			} else {
 				this._askForLogin();
 			}
+		},
+
+		_fetchUserInfo: async function() {
+			this.setBusy(true);
+
+			const sBody = this._getAuthenticatedBody();
+
+			const oResponse = await fetch(`${this.API_BASE_URL}/get-user-full-info`, {
+				method: 'POST',
+				body: sBody
+			});
+			if (oResponse.ok) {
+				const oUserInfo = await oResponse.json();
+
+				const oUserInfoModel = this.getModel("ig_user_info");
+				oUserInfoModel.setData(oUserInfo);
+			}
+
+			this.setBusy(false);
 		},
 
 		_askForLogin: function() {
@@ -132,11 +150,15 @@ sap.ui.define([
 					if (oResponse.ok) {
 						const oIGSettings = await oResponse.json();
 						const sIGSettings = JSON.stringify(oIGSettings);
+
 						localStorage.setItem("ig_settings", sIGSettings);
-						localStorage.setItem("authenticated_user_name", sUsername);
+
 						this._reloadConfig();
+						this._fetchUserInfo();
+
 						const sText = this.getText("action_success");
 						this.toast(sText);
+
 						this._oLoginPromptDialog.close();
 					} else {
 						const sText = this.getText("action_error");
@@ -188,9 +210,8 @@ sap.ui.define([
 
 		onLogoff: function(oEvent) {
 			this.setBusy(true);
-			localStorage.setItem("authenticated_user_name", "");
+			localStorage.setItem("ig_settings", "");
 			location.reload();
 		}
-
 	});
 });

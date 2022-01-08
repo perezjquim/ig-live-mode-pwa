@@ -16,7 +16,7 @@
             	title="{i18n>appTitle}">
                 <f:profile>
                     <Avatar
-                            src="{ path: 'config>/authenticated_user_name', formatter: '.fetchAvatar' }"
+                            src="{ig_user_info>/profile_pic_content}"
                             displaySize="S"
                             showBorder="true"
                             press="onAvatarPress"/>

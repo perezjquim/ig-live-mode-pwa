@@ -16,17 +16,7 @@ sap.ui.define([
 		_executeAction: function(sEndpoint) {
 			this.setBusy(true);
 
-			const oConfigModel = this.getModel("config");
-			const oConfigData = oConfigModel.getData();
-
-			const sIGSettings = localStorage.getItem("ig_settings");
-			const oIGSettings = JSON.parse(sIGSettings);
-
-			const oBody = {
-				"config": oConfigData,
-				"ig_settings": oIGSettings
-			};
-			const sBody = JSON.stringify(oBody);
+			const sBody = this._getAuthenticatedBody();
 
 			if (oConfigData && oIGSettings && sBody) {
 

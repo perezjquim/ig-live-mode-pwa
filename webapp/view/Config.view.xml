@@ -12,7 +12,8 @@
                 <Label 
                     text="{i18n>general_blacklist}" />
                 <Table
-                    items="{config>/general_blacklist}">
+                    fixedLayout="false"
+                    items="{ig_user_info>/followers}">
                     <headerToolbar>
                         <OverflowToolbar>
                             <content>
@@ -22,42 +23,32 @@
                                 <ObjectStatus
                                     state="Error"
                                     text="{i18n>general_blacklist_tip}"/>
-                                <ToolbarSpacer />
-                                <Button
-                                    icon="sap-icon://add"
-                                    type="Accept"
-                                    press="onAddEntry" />
                             </content>
                         </OverflowToolbar>
                     </headerToolbar>                    
                     <columns>
                         <Column>
                             <Label text="{i18n>user}" />
-                        </Column>
+                        </Column>          
+                        <Column>
+                            <Label />
+                        </Column>            
+                        <Column>
+                            <Label />
+                        </Column>                                                                          
                     </columns>
                     <items>
                         <ColumnListItem>
                             <cells>
-                                <HBox
-                                    justifyContent="SpaceAround">
-                                    <Avatar 
-                                        busyIndicatorDelay="0"
-                                        src="{ path: 'config>user_name', formatter: '.fetchAvatar' }"
-                                        displaySize="S"
-                                        showBorder="true" />                                    
-                                    <Input 
-                                        width="8rem"
-                                        value="{config>user_name}"/>
-                                    <Text 
-                                        busyIndicatorDelay="0"
-                                        width="4rem"             
-                                        wrapping="false"        
-                                        text="{ path: 'config>user_name', formatter: '.fetchFullName' }"/>  
-                                    <Button
-                                        icon="sap-icon://delete"
-                                        type="Reject"
-                                        press="onRemoveEntry"/>          
-                                </HBox>
+                                <Avatar 
+                                    src="{ig_user_info>profile_pic_content}"
+                                    displaySize="S"
+                                    showBorder="true" />                                    
+                                <Text    
+                                    text="{= ${ig_user_info>full_name} || '-' } ({ig_user_info>username})"/>
+                                <CheckBox
+                                    select="onToggleUserInGeneralBlacklist"
+                                    selected="{= ${config>/general_blacklist}.includes(${ig_user_info>username}) }" />
                             </cells>
                         </ColumnListItem>
                     </items>
@@ -65,7 +56,8 @@
                 <Label 
                     text="{i18n>live_whitelist}" />
                 <Table
-                    items="{config>/live_whitelist}">
+                    fixedLayout="false"
+                    items="{ig_user_info>/followers}">
                     <headerToolbar>
                         <OverflowToolbar>
                             <content>
@@ -75,42 +67,32 @@
                                 <ObjectStatus
                                     state="Success"
                                     text="{i18n>live_whitelist_tip}"/>                                    
-                                <ToolbarSpacer />
-                                <Button
-                                    icon="sap-icon://add"
-                                    type="Accept"
-                                    press="onAddEntry" />
                             </content>
                         </OverflowToolbar>
                     </headerToolbar>                    
                     <columns>
                         <Column>
                             <Label text="{i18n>user}" />
-                        </Column>
+                        </Column>  
+                        <Column>
+                            <Label />
+                        </Column>            
+                        <Column>
+                            <Label />
+                        </Column>                                                                 
                     </columns>
                     <items>
                         <ColumnListItem>
                             <cells>
-                                <HBox
-                                    justifyContent="SpaceAround">
-                                    <Avatar 
-                                        busyIndicatorDelay="0"
-                                        src="{ path: 'config>user_name', formatter: '.fetchAvatar' }"
-                                        displaySize="S"
-                                        showBorder="true" />                                    
-                                    <Input 
-                                        width="8rem"
-                                        value="{config>user_name}"/>
-                                    <Text 
-                                        busyIndicatorDelay="0"
-                                        width="4rem"             
-                                        wrapping="false"                    
-                                        text="{ path: 'config>user_name', formatter: '.fetchFullName' }"/>  
-                                    <Button
-                                        icon="sap-icon://delete"
-                                        type="Reject"
-                                        press="onRemoveEntry"/>          
-                                </HBox>
+                                <Avatar 
+                                    src="{ig_user_info>profile_pic_content}"
+                                    displaySize="S"
+                                    showBorder="true" />                                    
+                                <Text   
+                                    text="{= ${ig_user_info>full_name} || '-' } ({ig_user_info>username})"/>      
+                                <CheckBox
+                                    select="onToggleUserInLiveWhitelist"
+                                    selected="{= ${config>/live_whitelist}.includes(${ig_user_info>username}) }" />                                         
                             </cells>
                         </ColumnListItem>
                     </items>

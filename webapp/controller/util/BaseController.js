@@ -9,7 +9,7 @@ sap.ui.define([
 
 		_oFetchPromises: [],
 
-		API_BASE_URL: "https://perezjquim-ig-live-mode.herokuapp.com",
+		API_BASE_URL: "http://localhost:8000",
 
 		toast: function(sText) {
 			MessageToast.show(sText);
@@ -69,57 +69,20 @@ sap.ui.define([
 			}
 			oModel.setData(oData);
 		},
+		_getAuthenticatedBody: function() {
+			const oConfigModel = this.getModel("config");
+			const oConfigData = oConfigModel.getData();
 
+			const sIGSettings = localStorage.getItem("ig_settings");
+			const oIGSettings = JSON.parse(sIGSettings);
 
-		fetchAvatar: async function(sUserName) {
-			if (sUserName) {
-				const oUserInfo = await this._getUserInfo(sUserName);
-				if (oUserInfo) {
-					const sAvatarUrlProperty = "profile_pic_content";
-					const sAvatarUrl = oUserInfo[sAvatarUrlProperty];
-					return sAvatarUrl;
-				}
-			}
-		},
+			const oBody = {
+				"config": oConfigData,
+				"ig_settings": oIGSettings
+			};
+			const sBody = JSON.stringify(oBody);
 
-		fetchFullName: async function(sUserName) {
-			if (sUserName) {
-				const oUserInfo = await this._getUserInfo(sUserName);
-				if (oUserInfo) {
-					const sFullNameProperty = "full_name";
-					const sFullName = oUserInfo[sFullNameProperty];
-					return sFullName;
-				}
-			}
-		},
-
-		_getUserInfo: async function(sUserName) {
-			const oUserInfoModel = this.getModel("ig_user_info");
-			const sProperty = `/${sUserName}`;
-			var oUserInfo = oUserInfoModel.getProperty(sProperty);
-			if (oUserInfo) {
-				return oUserInfo;
-			} else {
-				oUserInfo = await this._fetchUserInfo(sUserName);
-				oUserInfoModel.setProperty(sProperty, oUserInfo);
-				return oUserInfo;
-			}
-		},
-
-		_fetchUserInfo: async function(sUserName) {
-			if (!this._oFetchPromises[sUserName]) {
-				this._oFetchPromises[sUserName] = fetch(`${this.API_BASE_URL}/get-user-info/${sUserName}`, {
-					method: "GET"
-				});
-			}
-			const oFetchPromise = this._oFetchPromises[sUserName];
-			const oResponse = await oFetchPromise;
-			if (oResponse.ok) {
-				const oUserInfo = await oResponse.json();
-				return oUserInfo;
-			} else {
-				return {};
-			}
+			return sBody;
 		}
 	});
 });
