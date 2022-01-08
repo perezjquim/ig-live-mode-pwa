@@ -9,7 +9,7 @@ sap.ui.define([
 
 		_oFetchPromises: [],
 
-		API_BASE_URL: "http://localhost:8000",
+		API_BASE_URL: "https://perezjquim-ig-live-mode.herokuapp.com",
 
 		toast: function(sText) {
 			MessageToast.show(sText);
