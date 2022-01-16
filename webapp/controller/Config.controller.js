@@ -6,61 +6,57 @@ sap.ui.define([
 	"use strict";
 	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.Config", {
 
-		getGeneralBlacklist: function(oFollowers) {
-			const oConfigModel = this.getModel("config");
-			const oGeneralBlacklist = oConfigModel.getProperty("/general_blacklist");
-
-			return oFollowers.filter(function(oFollower) {
-				return oGeneralBlacklist.includes(oFollower["username"]);
-			})
-		},
-
-		getLiveWhitelist: function(oFollowers) {
-			const oConfigModel = this.getModel("config");
-			const oLiveWhitelist = oConfigModel.getProperty("/live_whitelist");
-
-			return oFollowers.filter(function(oFollower) {
-				return oLiveWhitelist.includes(oFollower["username"]);
-			})
-		},
-
-		onToggleUserInGeneralBlacklist: function(oEvent) {
-			this._toggleUser(oEvent, "/general_blacklist");
-		},
-
-		onToggleUserInLiveWhitelist: function(oEvent) {
-			this._toggleUser(oEvent, "/live_whitelist");
-		},
-
-		_toggleUser: function(oEvent, sListPath) {
-			const oCheckBox = oEvent.getSource();
-			const oContext = oCheckBox.getBindingContext("ig_user_info");
-
-			const sUsername = oContext.getProperty("username");
-
-			const oConfigModel = this.getModel("config");
-			var oList = oConfigModel.getProperty(sListPath);
-
-			if (oList.includes(sUsername)) {
-				oList.splice(oList.indexOf(sUsername), 1);
-			} else {
-				oList.push(sUsername);
-			}
-
-			oConfigModel.setProperty(sListPath, oList);
-
-			this._saveConfig();
-		},
-
-		_saveConfig: function() {
+		onSaveConfig: async function(oEvent) {
 			this.setBusy(true);
 
-			const oModel = this.getModel("config");
-			const oConfig = oModel.getData();
-			const sConfig = JSON.stringify(oConfig);
+			const oConfigDraftModel = this.getModel("config_draft");
+			const oConfigDraft = oConfigDraftModel.getData();
+			const sConfigDraft = JSON.stringify(oConfigDraft);
 
-			const oStorage = this.getStorage();
-			oStorage.setItem("config", sConfig);
+			try {
+				const oResponse = await fetch(`${this.API_BASE_URL}/update-config`, {
+					method: "POST",
+					headers: this._getHeaders(),
+					body: sConfigDraft
+				});
+				if (oResponse.ok) {
+					const oConfig = await oResponse.json();
+
+					const oConfigModel = this.getModel("config");
+					oConfigModel.setData(this._copy(oConfig));
+
+					this._listenConfigChanges();
+
+					const oMiscModel = this.getModel("misc");
+					oMiscModel.setProperty("/is_config_changed", false);
+
+					const sText = this.getText("action_success");
+					this.toast(sText);
+				} else {
+					const sText = this.getText("action_error");
+					this.toast(sText);
+				}
+
+			} catch (oException) {
+				console.warn(oException);
+				this.toast(oException);
+			}
+
+			this.setBusy(false);
+		},
+
+		onDiscardConfig: function(oEvent) {
+			this.setBusy(true);
+
+			const oConfigModel = this.getModel("config");
+			const oOriginalConfig = oConfigModel.getData();
+
+			const oConfigDraftModel = this.getModel("config_draft");
+			oConfigDraftModel.setData(this._copy(oOriginalConfig));
+			this._listenConfigChanges();
+
+			const oMiscModel = this.getModel("misc");
+			oMiscModel.setProperty("/is_config_changed", false);
 
 			this.setBusy(false);
 		}

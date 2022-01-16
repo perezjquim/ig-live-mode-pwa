@@ -1,0 +1,8 @@
+[data-z_ig_mode='none']
+{
+	background-color: red !important;
+}
+[data-z_ig_mode='all']
+{
+	background-color: green !important;
+}

@@ -7,8 +7,6 @@ sap.ui.define([
 	"use strict";
 	return Controller.extend("com.perezjquim.iglivemode.pwa.controller.util.BaseController", {
 
-		_oFetchPromises: [],
-
 		API_BASE_URL: "https://perezjquim-ig-live-mode.herokuapp.com",
 
 		toast: function(sText) {
@@ -32,11 +30,6 @@ sap.ui.define([
 			const oRoute = oRouter.getRoute(sRoute);
 			oRoute.attachPatternMatched(fFunction);
 		},
-		getConfig: function(sKey) {
-			const oConfigModel = this.getModel("config");
-			const oConfig = oConfigModel.getProperty(`/${sKey}`);
-			return oConfig;
-		},
 		navTo: function(sRoute, oParams, bReplace) {
 			const oComponent = this.getOwnerComponent();
 			const oRouter = oComponent.getRouter();
@@ -58,9 +51,6 @@ sap.ui.define([
 				this.navTo("Home", {}, true);
 			}
 		},
-		getStorage: function() {
-			return window.localStorage;
-		},
 		clearModel: function(sName) {
 			const oModel = this.getModel(sName);
 			const oData = oModel.getData();
@@ -69,20 +59,25 @@ sap.ui.define([
 			}
 			oModel.setData(oData);
 		},
-		_getAuthenticatedBody: function() {
-			const oConfigModel = this.getModel("config");
-			const oConfigData = oConfigModel.getData();
+		_getHeaders: function() {
+			const oHeaders = new Headers();
 
 			const sIGSettings = localStorage.getItem("ig_settings");
-			const oIGSettings = JSON.parse(sIGSettings);
 
-			const oBody = {
-				"config": oConfigData,
-				"ig_settings": oIGSettings
-			};
-			const sBody = JSON.stringify(oBody);
+			oHeaders.append("ig_settings", sIGSettings);
 
-			return sBody;
+			return oHeaders;
+		},
+		_listenConfigChanges: function() {
+			const oMiscModel = this.getModel("misc");
+			const oConfigDraftModel = this.getModel("config_draft");
+
+			oConfigDraftModel.attachEventOnce("propertyChange", function(oEvent) {
+				oMiscModel.setProperty("/is_config_changed", true);
+			});
+		},
+		_copy: function(oData) {
+			return JSON.parse(JSON.stringify(oData));
 		}
 	});
 });

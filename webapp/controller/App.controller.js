@@ -13,7 +13,6 @@ sap.ui.define([
 			const oSWHelper = new SWHelper(this);
 			oSWHelper.init();
 
-			this._reloadConfig();
 			this._checkLogin();
 		},
 
@@ -56,48 +55,70 @@ sap.ui.define([
 			this.navBack();
 		},
 
-		_reloadConfig: function() {
-			const oStorage = this.getStorage();
-
-			const sConfig = oStorage.getItem("config");
-			if (sConfig) {
-				const oConfig = JSON.parse(sConfig);
-
-				const oModel = this.getModel("config");
-				oModel.setData(oConfig);
-			}
-		},
-
 		_checkLogin: function() {
-			const oModel = this.getModel("config");
 			const bIsLoggedIn = Boolean(localStorage.getItem("ig_settings"));
 
 			if (bIsLoggedIn) {
 				(async function() {
-					this._fetchUserInfo();
+					this._fetchData();
 				}.bind(this))();
 			} else {
 				this._askForLogin();
 			}
 		},
 
+		_fetchData: function() {
+			this._fetchUserInfo();
+			this._fetchConfig();
+		},
+
 		_fetchUserInfo: async function() {
 			this.setBusy(true);
 
-			const sBody = this._getAuthenticatedBody();
+			try {
+				const oResponse = await fetch(`${this.API_BASE_URL}/get-user-info`, {
+					method: 'GET',
+					headers: this._getHeaders()
+				});
+				if (oResponse.ok) {
+					const oUserInfo = await oResponse.json();
 
-			const oResponse = await fetch(`${this.API_BASE_URL}/get-user-full-info`, {
-				method: 'POST',
-				body: sBody
-			});
-			if (oResponse.ok) {
-				const oUserInfo = await oResponse.json();
-
-				const oUserInfoModel = this.getModel("ig_user_info");
-				oUserInfoModel.setData(oUserInfo);
+					const oUserInfoModel = this.getModel("ig_user_info");
+					oUserInfoModel.setData(oUserInfo);
+				}
+			} catch (oException) {
+				console.warn(oException);
+				this.toast(oException);
 			}
 
 			this.setBusy(false);
+		},
+
+		_fetchConfig: async function() {
+			try {
+				const oResponse = await fetch(`${this.API_BASE_URL}/get-config`, {
+					method: 'GET',
+					headers: this._getHeaders()
+				});
+				if (oResponse.ok) {
+					const oConfig = await oResponse.json();
+					const oConfigModel = this.getModel("config");
+					oConfigModel.setData(oConfig);
+
+					const oConfigDraft = this._copy(oConfig);
+					const oConfigDraftModel = this.getModel("config_draft");
+					oConfigDraftModel.setData(oConfigDraft);
+
+					this._listenConfigChanges();
+				}
+
+			} catch (oException) {
+				console.warn(oException);
+				this.toast(oException);
+			}
+
+			const oMiscModel = this.getModel("misc");
+			oMiscModel.setProperty("/is_config_loaded", true);
 		},
 
 		_askForLogin: function() {
@@ -141,20 +162,20 @@ sap.ui.define([
 
 			if (oLoginPromptData && sAuth) {
 
-				fetch(`${this.API_BASE_URL}/login`, {
-					method: "POST",
-					headers: {
-						"Authorization": sAuth
-					}
-				}).then(async (oResponse) => {
+				try {
+					const oResponse = await fetch(`${this.API_BASE_URL}/login`, {
+						method: "POST",
+						headers: {
+							"Authorization": sAuth
+						}
+					});
 					if (oResponse.ok) {
 						const oIGSettings = await oResponse.json();
 						const sIGSettings = JSON.stringify(oIGSettings);
 
 						localStorage.setItem("ig_settings", sIGSettings);
 
-						this._reloadConfig();
-						this._fetchUserInfo();
+						this._fetchData();
 
 						const sText = this.getText("action_success");
 						this.toast(sText);
@@ -164,12 +185,13 @@ sap.ui.define([
 						const sText = this.getText("action_error");
 						this.toast(sText);
 					}
-				}).catch(() => {
-					const sText = this.getText("action_error");
-					this.toast(sText);
-				}).finally(() => {
-					this.setBusy(false);
-				});
+
+				} catch (oException) {
+					console.warn(oException);
+					this.toast(oException);
+				}
+
+				this.setBusy(false);
 
 			} else {
 				this.setBusy(false);
@@ -210,7 +232,7 @@ sap.ui.define([
 
 		onLogoff: function(oEvent) {
 			this.setBusy(true);
-			localStorage.setItem("ig_settings", "");
+			localStorage.removeItem("ig_settings");
 			location.reload();
 		}
 	});

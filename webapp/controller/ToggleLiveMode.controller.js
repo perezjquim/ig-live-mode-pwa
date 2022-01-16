@@ -16,35 +16,23 @@ sap.ui.define([
 		_executeAction: function(sEndpoint) {
 			this.setBusy(true);
 
-			const sBody = this._getAuthenticatedBody();
-
-			if (oConfigData && oIGSettings && sBody) {
-
-				fetch(`${this.API_BASE_URL}/${sEndpoint}`, {
-					method: "POST",
-					body: sBody
-				}).then((oResponse) => {
-					if (oResponse.ok) {
-						const sText = this.getText("action_success");
-						this.toast(sText);
-					} else {
-						const sText = this.getText("action_error");
-						this.toast(sText);
-					}
-				}).catch(() => {
+			fetch(`${this.API_BASE_URL}/${sEndpoint}`, {
+				method: "POST",
+				headers: this._getHeaders()
+			}).then((oResponse) => {
+				if (oResponse.ok) {
+					const sText = this.getText("action_success");
+					this.toast(sText);
+				} else {
 					const sText = this.getText("action_error");
 					this.toast(sText);
-				}).finally(() => {
-					this.setBusy(false);
-				});
-
-			} else {
-				this.setBusy(false);
-
-				const sText = this.getText("incomplete_data");
+				}
+			}).catch(() => {
+				const sText = this.getText("action_error");
 				this.toast(sText);
-			}
+			}).finally(() => {
+				this.setBusy(false);
+			});
 		}
-
 	});
 });

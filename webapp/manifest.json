@@ -56,22 +56,34 @@
 					"bundleName": "com.perezjquim.iglivemode.pwa.i18n.i18n"
 				}
 			},
-			"config": {
-				"type": "sap.ui.model.json.JSONModel",
-				"uri": "model/config.json"
-			},
 			"navigation": {
 				"type": "sap.ui.model.json.JSONModel",
 				"uri": "model/navigation.json"
 			},
+			"misc": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "model/misc.json"
+			},
 			"ig_user_info": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"config": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"config_draft": {
 				"type": "sap.ui.model.json.JSONModel"
 			},
 			"login_prompt": {
 				"type": "sap.ui.model.json.JSONModel"
+			},
+			"ig_modes": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "https://perezjquim-ig-live-mode.herokuapp.com/get-modes"
 			}
 		},
-		"resources": {},
+		"resources": {
+			"css": ["css/extra.css"]
+		},
 		"routing": {
 			"config": {
 				"routerClass": "sap.m.routing.Router",
