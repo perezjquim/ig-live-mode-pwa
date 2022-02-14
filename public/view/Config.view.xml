@@ -17,7 +17,12 @@
                     items="{config_draft>/followers_config}"
                     growing="true"
                     busy="{= !${misc>/is_config_loaded} }"
-                    busyIndicatorDelay="0">               
+                    busyIndicatorDelay="0">   
+                    <headerToolbar>
+                        <Toolbar>
+                            <SearchField liveChange="onFollowerSearch" width="100%" />
+                        </Toolbar>
+                    </headerToolbar>                                
                     <columns>
                         <Column>
                             <Label text="{i18n>user}" />
@@ -44,7 +49,8 @@
                                 <Select
                                     forceSelection="true"
                                     selectedKey="{config_draft>ig_mode}"
-                                    items="{ path: 'ig_modes>/', templateShareable : true }">
+                                    items="{ path: 'ig_modes>/', templateShareable : true }"
+                                    width="25vw">
                                     <core:Item key="{ig_modes>key}" text="{ig_modes>text}" />
                                 </Select>
                             </cells>

@@ -1,8 +1,10 @@
 sap.ui.define([
 	"./util/BaseController",
 	"sap/m/MessageBox",
-	"sap/ui/core/Fragment"
-], function(BaseController, MessageBox, Fragment) {
+	"sap/ui/core/Fragment",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function(BaseController, MessageBox, Fragment, Filter, FilterOperator) {
 	"use strict";
 	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.Config", {
 
@@ -59,6 +61,24 @@ sap.ui.define([
 			oMiscModel.setProperty("/is_config_changed", false);
 
 			this.setBusy(false);
+		},
+
+		onFollowerSearch: function(oEvent) {
+			const oFilters = [];
+			const sQuery = oEvent.getParameter("newValue");
+			if (sQuery) {
+				const oFilter = new Filter({
+					filters: [new Filter("full_name", FilterOperator.Contains, sQuery), new Filter("username", FilterOperator.Contains, sQuery)],
+					and: true
+				});
+				oFilters.push(oFilter);
+			}
+
+			const oSearchField = oEvent.getSource();
+			const oToolbar = oSearchField.getParent();
+			const oTable = oToolbar.getParent();
+			const oBinding = oTable.getBinding("items");
+			oBinding.filter(oFilters, "Application");
 		}
 	});
 });
