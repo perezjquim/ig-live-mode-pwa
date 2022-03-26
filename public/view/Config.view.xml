@@ -46,7 +46,7 @@
                                     displaySize="XS"
                                     showBorder="true" />                                    
                                 <Text    
-                                    text="{= ${config_draft>full_name} || '-' } ({config_draft>username})"/>
+                                    text="{= ${config_draft>full_name} || '-' }\n({config_draft>username})"/>
                                 <Select
                                     forceSelection="true"
                                     selectedKey="{config_draft>ig_mode}"
