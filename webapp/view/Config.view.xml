@@ -42,15 +42,15 @@
                             <cells>
                                 <Avatar 
                                     src="{config_draft>profile_pic_content}"
-                                    displaySize="S"
+                                    displaySize="XS"
                                     showBorder="true" />                                    
                                 <Text    
-                                    text="{= ${config_draft>full_name} || '-' } ({config_draft>username})"/>
+                                    text="{= ${config_draft>full_name} || '-' } ({config_draft>username})"
+                                    width="25vw"/>
                                 <Select
                                     forceSelection="true"
                                     selectedKey="{config_draft>ig_mode}"
-                                    items="{ path: 'ig_modes>/', templateShareable : true }"
-                                    width="25vw">
+                                    items="{ path: 'ig_modes>/', templateShareable : true }">
                                     <core:Item key="{ig_modes>key}" text="{ig_modes>text}" />
                                 </Select>
                             </cells>
