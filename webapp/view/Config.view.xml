@@ -15,6 +15,8 @@
                 <Table
                     fixedLayout="false"
                     items="{config_draft>/followers_config}"
+                    growing="true"
+                    growingThreshold="500"
                     busy="{= !${misc>/is_config_loaded} }"
                     busyIndicatorDelay="0">   
                     <headerToolbar>
