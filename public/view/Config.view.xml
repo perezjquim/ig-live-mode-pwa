@@ -44,20 +44,14 @@
                                 <Avatar 
                                     src="{config_draft>profile_pic_content}"
                                     displaySize="XS"
-                                    showBorder="true" />
-                                <VBox
-        				alignItems="Center"
-        				justifyContent="Center">                                    
-	                                <Text    
-	                                    text="{= ${config_draft>full_name} || '-' }"/>
-	                                <Text    
-	                                    text="({config_draft>username})"/>	                                    
-                                </VBox>
+                                    showBorder="true" />                                    
+                                <Text    
+                                    text="{= ${config_draft>full_name} || '-' }\\\rn({config_draft>username})"/>
                                 <Select
                                     forceSelection="true"
                                     selectedKey="{config_draft>ig_mode}"
                                     items="{ path: 'ig_modes>/', templateShareable : true }"
-                                    width="40rem">
+                                    width="10rem">
                                     <core:Item key="{ig_modes>key}" text="{ig_modes>text}" />
                                 </Select>
                             </cells>
