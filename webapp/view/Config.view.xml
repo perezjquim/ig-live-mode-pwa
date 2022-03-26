@@ -44,9 +44,15 @@
                                 <Avatar 
                                     src="{config_draft>profile_pic_content}"
                                     displaySize="XS"
-                                    showBorder="true" />                                    
-                                <Text    
-                                    text="{= ${config_draft>full_name} || '-' }\n({config_draft>username})"/>
+                                    showBorder="true" />
+                                <VBox
+        				alignItems="Center"
+        				justifyContent="Center">                                    
+	                                <Text    
+	                                    text="{= ${config_draft>full_name} || '-' }"/>
+	                                <Text    
+	                                    text="({config_draft>username})"/>	                                    
+                                </VBox>
                                 <Select
                                     forceSelection="true"
                                     selectedKey="{config_draft>ig_mode}"
