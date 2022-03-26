@@ -45,12 +45,12 @@
                                     displaySize="XS"
                                     showBorder="true" />                                    
                                 <Text    
-                                    text="{= ${config_draft>full_name} || '-' } ({config_draft>username})"
-                                    width="25vw"/>
+                                    text="{= ${config_draft>full_name} || '-' } ({config_draft>username})"/>
                                 <Select
                                     forceSelection="true"
                                     selectedKey="{config_draft>ig_mode}"
-                                    items="{ path: 'ig_modes>/', templateShareable : true }">
+                                    items="{ path: 'ig_modes>/', templateShareable : true }"
+                                    width="40rem">
                                     <core:Item key="{ig_modes>key}" text="{ig_modes>text}" />
                                 </Select>
                             </cells>
