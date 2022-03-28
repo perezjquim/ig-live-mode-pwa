@@ -44,14 +44,15 @@
                                 <Avatar 
                                     src="{config_draft>profile_pic_content}"
                                     displaySize="XS"
-                                    showBorder="true" />                                    
+                                    showBorder="true"
+                                    width="5vw" />                                    
                                 <Text    
-                                    text="{= ${config_draft>full_name} || '-' }\\\rn({config_draft>username})"/>
+                                    text="{= ${config_draft>full_name} || '-' }{= '\n' }({config_draft>username})"
+                                    width="10vw"/>
                                 <Select
                                     forceSelection="true"
                                     selectedKey="{config_draft>ig_mode}"
-                                    items="{ path: 'ig_modes>/', templateShareable : true }"
-                                    width="10rem">
+                                    items="{ path: 'ig_modes>/', templateShareable : true }">
                                     <core:Item key="{ig_modes>key}" text="{ig_modes>text}" />
                                 </Select>
                             </cells>

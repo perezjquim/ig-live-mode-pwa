@@ -62,7 +62,7 @@ sap.ui.define([
 		_getHeaders: function() {
 			const oHeaders = new Headers();
 
-			const sIGSettings = localStorage.getItem("ig_settings");
+			const sIGSettings = encodeURIComponent(localStorage.getItem("ig_settings"));
 
 			oHeaders.append("ig_settings", sIGSettings);
 
