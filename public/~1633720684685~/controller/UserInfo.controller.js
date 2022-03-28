@@ -1,0 +1,1 @@
+sap.ui.define(["./util/BaseController"],function(e){"use strict";return e.extend("com.perezjquim.iglivemode.pwa.controller.Home",{})});

@@ -111,6 +111,12 @@
 				"target": [
 					"ToggleLiveMode"
 				]
+			}, {
+				"name": "UserInfo",
+				"pattern": "UserInfo",
+				"target": [
+					"UserInfo"
+				]
 			}],
 			"targets": {
 				"Home": {
@@ -130,6 +136,12 @@
 					"transition": "slide",
 					"controlAggregation": "pages",
 					"viewName": "ToggleLiveMode"
+				},
+				"UserInfo": {
+					"viewType": "XML",
+					"transition": "slide",
+					"controlAggregation": "pages",
+					"viewName": "UserInfo"
 				}
 			}
 		}

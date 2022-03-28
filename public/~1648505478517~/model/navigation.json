@@ -8,6 +8,9 @@
 	}, {
 		"key": "Config",
 		"icon": "sap-icon://settings"
+	}, {
+		"key": "UserInfo",
+		"icon": "sap-icon://information"
 	}],
 	"selected": null
 }
