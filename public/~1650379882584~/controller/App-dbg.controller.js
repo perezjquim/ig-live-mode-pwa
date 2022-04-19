@@ -158,9 +158,9 @@ sap.ui.define([
 			const sUsername = oLoginPromptData["user"];
 			const sPassword = oLoginPromptData["pw"];
 
-			const sAuth = "Basic " + btoa(sUsername + ":" + sPassword);
-
-			if (oLoginPromptData && sAuth) {
+			if(sUsername && sPassword)
+			{
+				const sAuth = "Basic " + btoa(sUsername + ":" + sPassword);
 
 				try {
 					const oResponse = await fetch(`${this.API_BASE_URL}/login`, {
