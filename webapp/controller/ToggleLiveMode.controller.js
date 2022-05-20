@@ -13,26 +13,31 @@ sap.ui.define([
 			this._executeAction("disable-live");
 		},
 
-		_executeAction: function(sEndpoint) {
+		_executeAction: async function(sEndpoint) {
 			this.setBusy(true);
 
-			fetch(`${this.API_BASE_URL}/${sEndpoint}`, {
-				method: "POST",
-				headers: this._getHeaders()
-			}).then((oResponse) => {
+			try {
+
+				const oResponse = await fetch(`${this.API_BASE_URL}/${sEndpoint}`, {
+					method: "POST",
+					headers: this._getHeaders()
+				});
+
 				if (oResponse.ok) {
 					const sText = this.getText("action_success");
 					this.toast(sText);
 				} else {
-					const sText = this.getText("action_error");
-					this.toast(sText);
+					const sErrorMsg = await oResponse.text();
+					console.warn(sErrorMsg);
+					this.toast(sErrorMsg);
 				}
-			}).catch(() => {
-				const sText = this.getText("action_error");
-				this.toast(sText);
-			}).finally(() => {
-				this.setBusy(false);
-			});
+
+			} catch (oException) {
+				console.warn(oException);
+				this.toast(oException);
+			}
+
+			this.setBusy(false);
 		}
 	});
 });

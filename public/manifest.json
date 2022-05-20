@@ -79,6 +79,9 @@
 			"ig_modes": {
 				"type": "sap.ui.model.json.JSONModel",
 				"uri": "https://perezjquim-ig-live-mode.herokuapp.com/get-modes"
+			},
+			"additional_auth_prompt": {
+				"type": "sap.ui.model.json.JSONModel"
 			}
 		},
 		"resources": {

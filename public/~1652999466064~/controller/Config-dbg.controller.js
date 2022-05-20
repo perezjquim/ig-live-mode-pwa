@@ -35,8 +35,9 @@ sap.ui.define([
 					const sText = this.getText("action_success");
 					this.toast(sText);
 				} else {
-					const sText = this.getText("action_error");
-					this.toast(sText);
+					const sErrorMsg = await oResponse.text();
+					console.warn(sErrorMsg);
+					this.toast(sErrorMsg);
 				}
 
 			} catch (oException) {

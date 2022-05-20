@@ -9,7 +9,6 @@
 			    <items>
 				     	<Input width="80vw" placeholder="{i18n>user}" value="{login_prompt>/user}" submit="onConfirmLogin"/>
 				     	<Input width="80vw" placeholder="{i18n>pw}" type="Password" value="{login_prompt>/pw}" submit="onConfirmLogin"/>
-				     	<Text text="{i18n>2fa_not_supp}"/>
 					<Button
 						width="80vw"
 						text="{i18n>login}"

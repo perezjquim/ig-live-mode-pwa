@@ -4,14 +4,17 @@ sap.ui.define([
 	"sap/ui/core/Fragment",
 	"sap/ui/util/Storage",
 	"sap/ui/Device",
-	"./util/SWHelper"
-], function(BaseController, History, Fragment, Storage, Device, SWHelper) {
+	"./util/SWHelper",
+	"./util/AdditionalAuthHelper"
+], function(BaseController, History, Fragment, Storage, Device, SWHelper, AdditionalAuthHelper) {
 	"use strict";
 	return BaseController.extend("com.perezjquim.iglivemode.pwa.controller.App", {
 
 		onInit: function(oEvent) {
 			const oSWHelper = new SWHelper(this);
 			oSWHelper.init();
+
+			this._oAddtionalAuthHelper = new AdditionalAuthHelper(this);
 
 			this._checkLogin();
 		},
@@ -60,14 +63,14 @@ sap.ui.define([
 
 			if (bIsLoggedIn) {
 				(async function() {
-					this._fetchData();
+					this.fetchData();
 				}.bind(this))();
 			} else {
 				this._askForLogin();
 			}
 		},
 
-		_fetchData: function() {
+		fetchData: function() {
 			this._fetchUserInfo();
 			this._fetchConfig();
 		},
@@ -85,6 +88,10 @@ sap.ui.define([
 
 					const oUserInfoModel = this.getModel("ig_user_info");
 					oUserInfoModel.setData(oUserInfo);
+				} else {
+					const sErrorMsg = await oResponse.text();
+					console.warn(sErrorMsg);
+					this.toast(sErrorMsg);
 				}
 			} catch (oException) {
 				console.warn(oException);
@@ -110,6 +117,10 @@ sap.ui.define([
 					oConfigDraftModel.setData(oConfigDraft);
 
 					this._listenConfigChanges();
+				} else {
+					const sErrorMsg = await oResponse.text();
+					console.warn(sErrorMsg);
+					this.toast(sErrorMsg);
 				}
 
 			} catch (oException) {
@@ -158,8 +169,7 @@ sap.ui.define([
 			const sUsername = oLoginPromptData["user"];
 			const sPassword = oLoginPromptData["pw"];
 
-			if(sUsername && sPassword)
-			{
+			if (sUsername && sPassword) {
 				const sAuth = "Basic " + btoa(sUsername + ":" + sPassword);
 
 				try {
@@ -169,21 +179,62 @@ sap.ui.define([
 							"Authorization": sAuth
 						}
 					});
+
 					if (oResponse.ok) {
+
 						const oIGSettings = await oResponse.json();
 						const sIGSettings = JSON.stringify(oIGSettings);
 
 						localStorage.setItem("ig_settings", sIGSettings);
 
-						this._fetchData();
+						this.fetchData();
 
 						const sText = this.getText("action_success");
 						this.toast(sText);
 
 						this._oLoginPromptDialog.close();
+
+					} else if (oResponse.status == 428) {
+
+						const oResponseJSON = await oResponse.json();
+
+						const oAdditionalAuthPromptModel = this.getModel("additional_auth_prompt");
+						oAdditionalAuthPromptModel.setData(oResponseJSON);
+						oAdditionalAuthPromptModel.setProperty("/authorization", sAuth);
+
+						this._oLoginPromptDialog.close();
+
+						if (!this._oAdditionalAuthPromptDialog) {
+
+							this.setBusy(true);
+
+							Fragment.load({
+								name: "com.perezjquim.iglivemode.pwa.view.fragment.AdditionalAuthPrompt",
+								controller: this
+							}).then(function(oDialog) {
+
+								this.setBusy(false);
+
+								const oView = this.getView();
+								oView.addDependent(oDialog);
+								oDialog.open();
+
+								this._oAdditionalAuthPromptDialog = oDialog;
+
+							}.bind(this));
+
+						} else {
+
+							this._oAdditionalAuthPromptDialog.open();
+
+						}
+
 					} else {
-						const sText = this.getText("action_error");
-						this.toast(sText);
+
+						const sErrorMsg = await oResponse.text();
+						console.warn(sErrorMsg);
+						this.toast(sErrorMsg);
+
 					}
 
 				} catch (oException) {
@@ -234,6 +285,14 @@ sap.ui.define([
 			this.setBusy(true);
 			localStorage.removeItem("ig_settings");
 			location.reload();
+		},
+
+		onAfterCloseAdditionalAuthPrompt: function(oEvent) {
+			this._oAddtionalAuthHelper.onAfterCloseAdditionalAuthPrompt(oEvent);
+		},
+
+		onConfirmAdditionalAuth: async function(oEvent) {
+			this._oAddtionalAuthHelper.onConfirmAdditionalAuth(oEvent);
 		}
 	});
 });

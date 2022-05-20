@@ -1,19 +1,17 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
 	<Dialog
-		beforeOpen="onBeforeOpenLoginPrompt"
-		afterClose="onAfterCloseLoginPrompt"
+		afterClose="onAfterCloseAdditionalAuthPrompt"
 		escapeHandler=".dummyEscapeHandler"
-		title="{i18n>login}">
+		title="{i18n>additional_auth}">
 		<content>
 		       <VBox fitContainer="true" justifyContent="Center" alignItems="Center" alignContent="Center">
 			    <items>
-				     	<Input width="80vw" placeholder="{i18n>user}" value="{login_prompt>/user}" submit="onConfirmLogin"/>
-				     	<Input width="80vw" placeholder="{i18n>pw}" type="Password" value="{login_prompt>/pw}" submit="onConfirmLogin"/>
+				     	<Input width="80vw" placeholder="{i18n>verification_code_placeholder}" value="{additional_auth_prompt>/verification_code}" submit="onConfirmAdditionalAuth"/>				     
 					<Button
 						width="80vw"
 						text="{i18n>login}"
 						type="Emphasized"
-						press="onConfirmLogin"/>					     
+						press="onConfirmAdditionalAuth"/>					     
 			    </items>
 		   	</VBox>
 		</content>
